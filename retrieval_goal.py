@@ -14,6 +14,7 @@ from PIL import Image
 import torch.nn.functional as F
 from utils.func import *
 from utils.transforms import *
+from tqdm import tqdm
 
 # Hyperparameters
 micro_batch_size = 32
@@ -82,6 +83,8 @@ def main(args):
         query_list = 'datasets/urban_dataset_test.json'
     elif args.dataset =='sharegpt4v':
         query_list = 'datasets/sharegpt4v_test.json'
+    else:
+        query_list =  "datasets/" + args.dataset
 
     with open(query_list) as f:
         query_list = json.loads(f.read())
@@ -121,7 +124,7 @@ def test(fabric: L.Fabric, model: torch.nn.Module, query_loader) -> torch.Tensor
     images = torch.tensor([], dtype=torch.float32).to(fabric.device)
     texts = torch.tensor([], dtype=torch.float32).to(fabric.device)
 
-    for samples in query_loader:
+    for samples in tqdm(query_loader):
         image, text = samples
 
         x = model(pixel_values=image, input_ids=text)

@@ -1,6 +1,6 @@
 import torch
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import json
 import argparse
 from PIL import Image
@@ -116,11 +116,11 @@ def train(
             image, text = samples
 
             x = model(pixel_values=image, input_ids=text)
-            print(x.image_embeds.shape)
+            # print(x.image_embeds.shape)
   
             x_i = batch_align(fabric, F.normalize(x.image_embeds))
             x_t = batch_align(fabric, F.normalize(x.text_embeds))
-            print(x_i.shape)
+            # print(x_i.shape)
 
             sim = model.logit_scale.exp()*x_i@x_t.t()
             loss = clip_loss(sim)
@@ -129,7 +129,7 @@ def train(
             optimizer.step()
             optimizer.zero_grad()
 
-            fabric.print(f"epoch {epoch} iter {iter} ({(iter/total_iter)*100:.4f}%) lr {lr:.6f} loss {loss.item():.4f}")
+            # fabric.print(f"epoch {epoch} iter {iter} ({(iter/total_iter)*100:.4f}%) lr {lr:.6f} loss {loss.item():.4f}")
             
             # Log metrics to wandb
             if fabric.global_rank == 0:
