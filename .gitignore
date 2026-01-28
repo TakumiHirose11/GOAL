@@ -1,0 +1,6 @@
+logs/*
+mydatasets/*
+exps/*
+wandb/*
+utils/__pycache__/*
+models/

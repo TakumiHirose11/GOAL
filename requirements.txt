@@ -1,0 +1,12 @@
+torch
+torchvision
+lightning
+transformers
+deepspeed
+wandb
+numpy
+Pillow
+opencv-python
+matplotlib
+requests
+tqdm
